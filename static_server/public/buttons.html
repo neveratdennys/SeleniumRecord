@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.5s ease;
+      }
+
+      button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      #button1 {
+        background-color: #3498db;
+      }
+      #button2 {
+        background-color: #2ecc71;
+      }
+      #button3 {
+        background-color: #e74c3c;
+      }
+      #button4 {
+        background-color: #f39c12;
+      }
+      #button5 {
+        background-color: #9b59b6;
+      }
+    </style>
+    <script>
+      function changeBackgroundColor(color) {
+        document.body.style.backgroundColor = color;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="test-tlass-outer">
+      <div class="test-class-inner">
+        <button id="button1" onclick="changeBackgroundColor('#3498db')">
+          Button 1
+        </button>
+        <button id="button2" onclick="changeBackgroundColor('#2ecc71')">
+          Button 2
+        </button>
+        <button id="button3" onclick="changeBackgroundColor('#e74c3c')">
+          Button 3
+        </button>
+        <button id="button4" onclick="changeBackgroundColor('#f39c12')">
+          Button 4
+        </button>
+        <button id="button5" onclick="changeBackgroundColor('#9b59b6')">
+          Button 5
+        </button>
+        <button onclick="changeBackgroundColor('#3c59a6')">Button 6</button>
+        <button onclick="changeBackgroundColor('#a7d4cc')">Button 7</button>
+      </div>
+    </div>
+    <div class="test-tlass-outer">
+        <div class="test-class-inner">
+          <button id="button9" onclick="changeBackgroundColor('#3498db')">
+            Button 9
+          </button>
+          <button id="button10" onclick="changeBackgroundColor('#2ecc71')">
+            Button 10
+          </button>
+          <button id="button11" onclick="changeBackgroundColor('#e74c3c')">
+            Button 11
+          </button>
+          <button id="button12" onclick="changeBackgroundColor('#f39c12')">
+            Button 12
+          </button>
+          <button id="button13" onclick="changeBackgroundColor('#9b59b6')">
+            Button 13
+          </button>
+          <button onclick="changeBackgroundColor('#3c59a6')">Button 14</button>
+          <button onclick="changeBackgroundColor('#a7d4cc')">Button 15</button>
+        </div>
+      </div>
+  </body>
+</html>

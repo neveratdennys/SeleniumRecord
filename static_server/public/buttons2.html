@@ -1,0 +1,159 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.5s ease;
+      }
+
+      button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+    </style>
+    <script>
+      function changeBackgroundColor(color) {
+        document.body.style.backgroundColor = color;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="test-tlass-outer">
+      <div class="test-class-inner">
+        <button id="button1" onclick="changeBackgroundColor('green')">
+          Button 1
+        </button>
+        <button id="button2" onclick="changeBackgroundColor('blue')">
+          Button 2
+        </button>
+        <button onclick="changeBackgroundColor('yellow')">Button 6</button>
+        <button onclick="changeBackgroundColor('pink')">Button 7</button>
+      </div>
+    </div>
+    <div class="test-tlass-outer">
+        <div class="test-class-inner">
+          <button id="button9" onclick="changeBackgroundColor('red')">
+            Button 9
+          </button>
+          <button id="button10" onclick="changeBackgroundColor('black')">
+            Button 10
+          </button>
+          <button onclick="changeBackgroundColor('orange')">Button 14</button>
+          <button onclick="changeBackgroundColor('violet')">Button 15</button>
+        </div>
+      </div>
+  </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.5s ease;
+      }
+
+      button {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      label {
+        margin: 10px 0;
+      }
+
+      input,
+      select {
+        padding: 8px;
+        margin: 5px;
+      }
+    </style>
+    <script>
+      function changeBackgroundColor(color) {
+        document.body.style.backgroundColor = color;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="test-class-outer">
+      <div class="test-class-inner">
+        <button id="button1" onclick="changeBackgroundColor('green')">
+          Button 1
+        </button>
+        <button id="button2" onclick="changeBackgroundColor('blue')">
+          Button 2
+        </button>
+        <button onclick="changeBackgroundColor('yellow')">Button 6</button>
+        <button onclick="changeBackgroundColor('pink')">Button 7</button>
+      </div>
+    </div>
+    <div class="test-class-outer">
+      <div class="test-class-inner">
+        <button id="button9" onclick="changeBackgroundColor('red')">
+          Button 9
+        </button>
+        <button id="button10" onclick="changeBackgroundColor('black')">
+          Button 10
+        </button>
+        <button onclick="changeBackgroundColor('orange')">Button 14</button>
+        <button onclick="changeBackgroundColor('violet')">Button 15</button>
+      </div>
+    </div>
+
+    <!-- Adding a form with various inputs -->
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" />
+
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" />
+
+      <label for="color">Favorite Color:</label>
+      <input type="text" id="color" name="color" />
+
+      <label for="gender">Gender:</label>
+      <input type="radio" id="male" name="gender" value="male" />
+      <label for="male">Male</label>
+      <input type="radio" id="female" name="gender" value="female" />
+      <label for="female">Female</label>
+
+      <label for="country">Country:</label>
+      <select id="country" name="country">
+        <option value="usa">USA</option>
+        <option value="canada">Canada</option>
+        <option value="uk">UK</option>
+      </select>
+
+      <label for="subscribe">Subscribe to newsletter:</label>
+      <input type="checkbox" id="subscribe" name="subscribe" />
+
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
