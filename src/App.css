@@ -1,0 +1,60 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 5vmin;
+  margin: 15px 20px 0 20px;
+}
+
+.App-header {
+  min-height: 15vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  text-align: center;
+  font-size: calc(15px + 2vmin);
+  color: white;
+  margin: 20px 40px 10px 40px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ant-upload-list-item {
+  border-left: 2px solid #999;
+  background: #ffe0b2;
+}
+
+.ant-layout-header {
+  background-color: rgb(40, 44, 52) !important;
+}
+
+.ant-card-head {
+  background-color: #ffb74d !important;
+}
+
+.instructionDiv {
+  min-height: 200px;
+}
+
+
+.search-wrapper {
+  padding: 10px;
+}
+
+.custmizeSearchBar {
+  width: 100%;
+}
