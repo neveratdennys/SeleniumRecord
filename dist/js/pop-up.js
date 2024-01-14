@@ -13,131 +13,20 @@ let emailDomain = "aexclienttest.net";
 $(document).ready(function () {
   getStatusFromBackgroundPage();
 
-  const btn1 = document.getElementById('startBtn');
-  const btn2 = document.getElementById('stopBtn');
-  const btn3 = document.getElementById('normalPlaybackBtn');
-  const btn4 = document.getElementById('resetBtn');
-  const btn5 = document.getElementById('downloadBtn');
-  const btn6 = document.getElementById('mv2SimqPlaybackBtn');
-  const btn7 = document.getElementById('selfServicePlaybackBtn');
-  const btn8 = document.getElementById('salesforcePlaybackBtn');
-  const btn9 = document.getElementById('ivariPlaybackBtn');
-  const btn10 = document.getElementById('playbackBtn_Others');
-  const btn11 = document.getElementById('searchEmail_Salesforce');
-  const btn12 = document.getElementById('updateEmail_Salesforce');
-  const btn13 = document.getElementById("goBackBtn");
-  const btn14 = document.getElementById("disregardRecordBtn");
-  const btn15 = document.getElementById("getSeleniumActionsBtn");
-  const btn16 = document.getElementById("jsonListBtn");
-  const btn17 = document.getElementById("jasonEditorBtn");
-  const btn18 = document.getElementById("saveJsonConfirmBtn");
-  const btn19 = document.getElementById("saveJsonBtn");
-  const btn20 = document.getElementById("localStoragePlayback");
-  const btn21 = document.getElementById("dataEntryWorkerBtn");
-  const btn22 = document.getElementById("saveJsonConfirmBtnAndStop");
-  const btn23 = document.getElementById("dataEntryWorkerBtn_inprogress");
-  const btn24 = document.getElementById("CreateCSV");
-  const btn25 = document.getElementById("CSVForBulkUploadAll");
-  //const btn26 = document.getElementById("CSVForBulkUploadRequired");
+  const startRecordBtn = document.getElementById('startBtn');
+  const stopRecordBtn = document.getElementById('stopBtn')
+  const resetBtn = document.getElementById('resetBtn')
 
-  const toggleCheckbox1 = document.getElementById("msgbox_show");
-  const toggleCheckbox2 = document.getElementById("pauseModeToggle");
-  const toggleCheckbox3 = document.getElementById("demoModeToggle");
-  const toggleCheckbox4 = document.getElementById("autoPublishToggle");
+  //click to start recording
+  startRecordBtn.addEventListener('click', () => startRecording());
 
-  const numberInput1 = document.getElementById("repeatMaxInput");
-
-  const chkbox1 = document.getElementById('createNewTransactionCheckbox');
-  const extensionVersion = getExtensionVersion();
-  $('[data-toggle="tooltip"]').tooltip();
-
-  //click btn1 to start recording
-  btn1.addEventListener('click', () => startRecording());
-
-  //click btn2 to stop the recording
-  btn2.addEventListener('click', () => stopRecording());
-
-  //click the btn3 to playback
-  btn3.addEventListener('click', () => playbackFromCurrentPage());
+  //click to stop the recording
+  stopRecordBtn.addEventListener('click', () => stopRecording());
 
   //click btn4 to reset the extension
   btn4.addEventListener('click', () => resetExtension());
 
-  //click btn5 to download saved json
-  btn5.addEventListener('click', () => downloadJsonFile());
-
-  //click btn6789 to display other playback options
-  btn6.addEventListener('click', () => displayContentByPlaybackType('publish_info_SIMQ_MV2', 1));
-  btn7.addEventListener('click', () => displayContentByPlaybackType('publish_info_SelfService', 2));
-  btn8.addEventListener('click', () => displayContentByPlaybackType('publish_info_Salesforce', 3));
-  btn9.addEventListener('click', () => displayContentByPlaybackType('publish_info_Ivari', 4));
-
-  //click btn10 to playback
-  btn10.addEventListener('click', () => startPlayBackByOptions());
-
-  //click btn11 to search emails in HTML for salesforse workflow
-  btn11.addEventListener('click', () => searchEmailsInJsonAndDisplayInHTML());
-
-  //click btn12 to replace all emails in JSON by user input
-  btn12.addEventListener('click', () => updateEmailsInJsonByUserInput());
-
-  //click btn13 to go back to main page
-  btn13.addEventListener('click', () => displayMainPage());
-
-  //click btn14 to disregard the record and playback and display mainpage
-  btn14.addEventListener('click', () => disregardRecordPlayback());
-
-  //click btn15 to get selenium actions from page
-  btn15.addEventListener('click', () => getSeleniumActionsFromPage());
-
-  //click btn16 to open option page - saved json list
-  btn16.addEventListener('click', () => openOptionPageForSavedJsonList());
-
-  //click btn17 to open option page - json editor
-  btn17.addEventListener('click', () => openOptionPageForJsonEditor());
-
-  //click btn18 to save json to local storage
-  btn18.addEventListener('click', () => saveJsonToLocalStorage());
-
-  //click btn19 to reset the confirm model dialog for save json file
-  btn19.addEventListener('click', () => clearValueForSaveJsonConfirmDialog());
-
-  //click btn20 to hide the playbackType model
-  btn20.addEventListener('click', () => displaySavedJsonList());
-
-  //click btn21, btn23 to start data entry worker (autofill)
-  btn21.addEventListener('click', () => callDataEntryWorker());
-  btn23.addEventListener('click', () => callDataEntryWorker());
-
-  //click btn22 to save json to local storage and stop recording
-  btn22.addEventListener('click', () => saveJsonToLocalStorage(true));
-
-  //click btn24 to upload json for parsing
-  btn24.addEventListener('click', () => uploadJsonFiles());
-
-  //click btn26 to create csv file from all fields
-  btn25.addEventListener('click', () => createCSVForBulkUploadFromAllFields());
-
-  //click btn26 to create csv file from required fields
-  //btn26.addEventListener('click', () => createCSVForBulkUploadFromRequiredFields());
-
-  //Ivari checkbox
-  chkbox1.addEventListener('click', () => hideOrShowIvariInput());
-
-  //toggle checkbox1 to display message box
-  toggleCheckbox1.onchange = (event) => sendMessageToProxyAndBackgroundPages("msgbox_toggle", { status: event.target.checked }, 2);
-
-  //toggle checkbox2 to enable pause mode for playback
-  toggleCheckbox2.onchange = function (event) { pauseMode = event.target.checked; };
-
-  //toggle checkbox3 to enable demo mode for playback
-  toggleCheckbox3.onchange = function (event) { demoMode = event.target.checked; };
-
-  //toggle checkbox4 to auto publish after complete palyback
-  toggleCheckbox4.onchange = function (event) { autoPublish = event.target.checked; };
-
-  //update upload file name in text box
-  document.getElementById("uploadFileElement").onchange = () => updateTextDisplayforUploadField();
+  
 
   //select server dropdown
   addEventListenerForServerDropdownlist();
@@ -172,14 +61,14 @@ $(document).ready(function () {
  * @param {*} notInViewerFunction function will excute if current page not in viewer
  */
 function isCurrentPageDocumentViewer(inViewerFunction, notInViewerFunction) {
-  chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-    var curURL = tabs[0].url;
-    if ((String(curURL).includes(":8080") || String(curURL).includes("agreementexpress.net")) && (String(curURL).includes("viewer") || String(curURL).includes("workflow"))) {
-      inViewerFunction();
-    } else {
-      notInViewerFunction();
-    }
-  });
+  // chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //   var curURL = tabs[0].url;
+  //   if ((String(curURL).includes(":8080") || String(curURL).includes("agreementexpress.net")) && (String(curURL).includes("viewer") || String(curURL).includes("workflow"))) {
+  //     inViewerFunction();
+  //   } else {
+  //     notInViewerFunction();
+  //   }
+  // });
 }
 
 /**
@@ -514,12 +403,14 @@ function preparePlaybackInfo() {
   document.querySelector("#Playback_Information_P2").innerHTML = uploadedJson.meta.transactionFolderName ? uploadedJson.meta.transactionFolderName : "Unknown";
 }
 
-/**
- * clear all global variable and reload popup page
- */
-function resetExtension() {
-  chrome.runtime.sendMessage({ message: "reset_called_from_popup" });
-  location.reload();
+
+function sendMessageToBackground(messageToSend, dataToSend)
+{
+
+}
+
+function sendMessageToContent(messageToSEnd, dataToSend) {
+  
 }
 
 /**
@@ -528,9 +419,7 @@ function resetExtension() {
  * @param {json} dataToSend data to Send
  * @param {int} type 0 to both, 1 to Background, 2 to Proxy
  */
-function sendMessageToProxyAndBackgroundPages(messageToSend, dataToSend, type) {
-  console.log('sendmessagetoProxyandBackgroundPages')
-  
+function sendMessageToProxyAndBackgroundPages(messageToSend, dataToSend, type) {  
   if (type == 0 || type == 2) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       D(tabs[0].id, { message: messageToSend, data: dataToSend });
@@ -539,8 +428,6 @@ function sendMessageToProxyAndBackgroundPages(messageToSend, dataToSend, type) {
   
   if (type == 0 || type == 1) {
     chrome.runtime.sendMessage({ message: messageToSend, data: dataToSend });
-    console.log('chrome.sendMessage')
-
   }
 }
 
@@ -606,11 +493,7 @@ function updateUserSelectedOptions() {
   demoMode = document.getElementById("demoModeToggle").checked;
 }
 
-function playbackFromCurrentPage() {
-  var fileElement = document.getElementById("uploadFileElement");
-  fileElement.click();
-  fileElement.addEventListener('change', saveUploadFileAndSendToPage);
-}
+
 
 function saveUploadFileAndSendToPage() {
   prepareUploadedFileAsObject().then(UploadedFile => {

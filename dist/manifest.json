@@ -15,45 +15,13 @@
     ],
     "content_scripts": [
         {
-            "matches": ["https://*.agreementexpress.net/mv2/viewer2.jsp*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["http://*:8080/mv2/viewer2.jsp*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["https://*.agreementexpress.net/html5/agreementviewer.jsp*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["http://*:8080/html5/agreementviewer.jsp*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["https://*.agreementexpress.net/workflow/?docId=*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["https://*:8080/workflow/?docId=*"],
-            "js": ["content_script/viewer_proxy.js"]
-        },
-        {
-            "matches": ["https://*.agreementexpress.net/html5/manager/agreementExpress.jsp*"],
-            "js": ["content_script/simq_proxy.js"]
-        },
-        {
-            "matches": ["https://*.agreementexpress.net/mv2*"],
-            "js": ["content_script/mv2_proxy.js"]
+            "matches": ["<all_urls>"],
+            "js": ["content_script/content.js"]
         }
-       
     ],
     "background": {
         "scripts": [
-            "js/hot-reload.js",
-            "background.js",
-            "js/jszip.min.js",
-            "js/FileSaver.js"
+            "background.js"
         ],
         "persistent": false
     },
