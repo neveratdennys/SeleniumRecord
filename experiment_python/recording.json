@@ -1,0 +1,81 @@
+{
+    "title": "Select Tenant",
+    "steps": [
+        {
+            "type": "setViewport",
+            "width": 3440,
+            "height": 1351,
+            "deviceScaleFactor": 1,
+            "isMobile": false,
+            "hasTouch": false,
+            "isLandscape": false
+        },
+        {
+            "type": "navigate",
+            "url": "https://unitydev.ca/support/dashboard",
+            "assertedEvents": [
+                {
+                    "type": "navigation",
+                    "url": "https://unitydev.ca/support/dashboard",
+                    "title": "Unity"
+                }
+            ]
+        },
+        {
+            "type": "waitForElement",
+            "timeout": 15000,
+            "target": "main",
+            "selectors": [
+                "button:nth-of-type(2) div",
+                "xpath///*[@id=\"root\"]/div/div/header/div/button[2]/span[1]/div",
+                "pierce/button:nth-of-type(2) div"
+            ]
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                "button:nth-of-type(2) div",
+                "xpath///*[@id=\"root\"]/div/div/header/div/button[2]/span[1]/div",
+                "pierce/button:nth-of-type(2) div"
+            ],
+            "offsetX": 3,
+            "offsetY": 14
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                "aria/Current Tenant",
+                "#current-tenant",
+                "xpath///*[@id=\"current-tenant\"]",
+                "pierce/#current-tenant"
+            ],
+            "offsetX": 172.65625,
+            "offsetY": 9
+        },
+        {
+            "type": "click",
+            "target": "main",
+            "selectors": [
+                [
+                    "aria/Univerus Software Inc"
+                ],
+                [
+                    "#current-tenant-option-1"
+                ],
+                [
+                    "xpath///*[@id=\"current-tenant-option-1\"]"
+                ],
+                [
+                    "pierce/#current-tenant-option-1"
+                ],
+                [
+                    "text/Univerus Software"
+                ]
+            ],
+            "offsetY": 5,
+            "offsetX": 180
+        }
+    ]
+}
