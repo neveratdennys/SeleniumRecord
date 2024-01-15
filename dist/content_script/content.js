@@ -1,92 +1,90 @@
 console.log("UDP Recorder has successfully loaded");
 
 window.addEventListener("load", () => {
-  addUdpRecordEventListenerToPage();
+    addUdpRecordEventListenerToPage();
 });
 
 // TODO: update the logic if
 // checks if the element has a UDP record element signature
 function isUdpRecordElement(element) {
-  if (element.id) {
-    return true;
-  }
-  return false;
+    if (element.id) {
+        return true;
+    }
+    return false;
 }
 
 // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
 const clickEvent = (event) => {
-    event.stopPropagation() 
-  let element = event.target;
+    event.stopPropagation();
+    let element = event.target;
+    
+    while (element && element !== document.body && !isUdpRecordElement(element)) {
+        element = element.parentNode;
+    }
 
-  while (element && element !== document.body && !isUdpRecordElement(element)) {
-    element = element.parentNode;
-  }
+    if (element && element !== document.body) {
+        const elementInfo = {
+            type: "click",
+            id: element.id,
+        };
 
-
-  if (element && element !== document.body) {
-
-    const elementInfo = {
-      type: "click",
-      id: element.id,
-    };
-
-    // Send a message to the background script with the extracted data
-    chrome.runtime.sendMessage({ data: elementInfo });
-  }
+        // Send a message to the background script with the extracted data
+        chrome.runtime.sendMessage({ data: elementInfo });
+    }
 };
 
 // function to get add event listener to all UDP input elements
 const inputEvent = (event) => {
-  const elementInfo = {
-    type: "input",
-    id: event.target.id,
-    value: event.target.value,
-  };
+    const elementInfo = {
+        type: "input",
+        id: event.target.id,
+        value: event.target.value,
+    };
 
-  // Send a message to the background script with the extracted data
-  chrome.runtime.sendMessage({ data: elementInfo });
+    // Send a message to the background script with the extracted data
+    chrome.runtime.sendMessage({ data: elementInfo });
 };
 
 // function to add event listener to all UDP click elements
 function addUdpRecordEventListenerToPage() {
-  //   let allElements = document.querySelectorAll('[id*="UDP_Record"');
-  let allElements = document.querySelectorAll("*");
+    //   let allElements = document.querySelectorAll('[id*="UDP_Record"');
+    let allElements = document.querySelectorAll("*");
 
-  allElements.forEach((element) => {
-    if (element.tagName.toLowerCase() != "input") {
-      element.addEventListener("click", clickEvent);
-      console.log(element.id + " click eventListener added");
-    } else if (element.tagName.toLowerCase() == "input") {
-      element.addEventListener("input", inputEvent);
-      console.log(element.id + " input eventListener added");
-    }
-  });
+    allElements.forEach((element) => {
+        if (element.tagName.toLowerCase() != "input") {
+            element.addEventListener("click", clickEvent);
+            console.log(element.id + " click eventListener added");
+        } else if (element.tagName.toLowerCase() == "input") {
+            element.addEventListener("input", inputEvent);
+            console.log(element.id + " input eventListener added");
+        }
+    });
 }
 
 function removeUdpRecordEventListenerFromPage() {
-  let allElements = document.querySelectorAll("*");
+    let allElements = document.querySelectorAll("*");
 
-  allElements.forEach((element) => {
-    let eventListeners = getEventListener(element);
-    // remove click events
-    if (eventListeners && eventListeners[clickEvent]) {
-      element.removeEventListener(clickEvent);
-    }
-    // remove form input events
-    if (eventListeners && eventListeners[inputEvent]) {
-      element.removeEventListener(inputEvent);
-    }
-  });
+    allElements.forEach((element) => {
+        let eventListeners = getEventListener(element);
+        // remove click events
+        if (eventListeners && eventListeners[clickEvent]) {
+            element.removeEventListener(clickEvent);
+        }
+        // remove form input events
+        if (eventListeners && eventListeners[inputEvent]) {
+            element.removeEventListener(inputEvent);
+        }
+    });
 }
 
 function waitForCondition(checkFunction, callbackFunction, interval = 50) {
-  if (checkFunction()) {
-    callbackFunction();
-  } else {
-    setTimeout(() => {
-      waitForCondition(checkFunction, callbackFunction, interval);
-    }, interval);
-  }
+    if (checkFunction()) {
+        callbackFunction();
+    } else {
+        setTimeout(() => {
+            waitForCondition(checkFunction, callbackFunction, interval);
+        }, interval);
+    }
 }
 
 // function updateAllUdpEventListeners() {
