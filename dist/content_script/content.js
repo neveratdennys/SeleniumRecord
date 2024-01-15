@@ -4,23 +4,43 @@ window.addEventListener("load", () => {
   addUdpRecordEventListenerToPage();
 });
 
-// function to get add event listener to all UDP click elemnets
-const clickEvent = (event) => {
-  const elementInfo = {
-    type: 'click',
-    id: event.target.id,
-  };
+// TODO: update the logic if
+// checks if the element has a UDP record element signature
+function isUdpRecordElement(element) {
+  if (element.id) {
+    return true;
+  }
+  return false;
+}
 
-  // Send a message to the background script with the extracted data
-  chrome.runtime.sendMessage({ data: elementInfo });
+// function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
+const clickEvent = (event) => {
+    event.stopPropagation() 
+  let element = event.target;
+
+  while (element && element !== document.body && !isUdpRecordElement(element)) {
+    element = element.parentNode;
+  }
+
+
+  if (element && element !== document.body) {
+
+    const elementInfo = {
+      type: "click",
+      id: element.id,
+    };
+
+    // Send a message to the background script with the extracted data
+    chrome.runtime.sendMessage({ data: elementInfo });
+  }
 };
 
 // function to get add event listener to all UDP input elements
 const inputEvent = (event) => {
   const elementInfo = {
-    type: 'input',
+    type: "input",
     id: event.target.id,
-    value: event.target.value
+    value: event.target.value,
   };
 
   // Send a message to the background script with the extracted data
@@ -29,17 +49,10 @@ const inputEvent = (event) => {
 
 // function to add event listener to all UDP click elements
 function addUdpRecordEventListenerToPage() {
-  console.log("add event listener to all object is run");
   //   let allElements = document.querySelectorAll('[id*="UDP_Record"');
   let allElements = document.querySelectorAll("*");
 
   allElements.forEach((element) => {
-    // skip non udp recording elements
-    // TODO: add more robust logic when id naming convention has been settled
-    if (!element.id) {
-      return;
-    }
-
     if (element.tagName.toLowerCase() != "input") {
       element.addEventListener("click", clickEvent);
       console.log(element.id + " click eventListener added");
@@ -55,13 +68,13 @@ function removeUdpRecordEventListenerFromPage() {
 
   allElements.forEach((element) => {
     let eventListeners = getEventListener(element);
-    // remove click events 
+    // remove click events
     if (eventListeners && eventListeners[clickEvent]) {
       element.removeEventListener(clickEvent);
     }
-    // remove form input events 
-    if(eventListeners && eventListeners[inputEvent]){
-        element.removeEventListener(inputEvent);
+    // remove form input events
+    if (eventListeners && eventListeners[inputEvent]) {
+      element.removeEventListener(inputEvent);
     }
   });
 }
