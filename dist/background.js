@@ -31,20 +31,22 @@ function generateSeleniumScript() {
     })();
   `;
 
-  let actionScripts = "";
+  let actionScript = "";
 
   recordedActions.forEach((actionStep) => {
+    actionLine = `await driver.findElement(By.id("${actionStep.id}"))`
+    
     if (actionStep.type != "input") {
-      actionLine = `await driver.findElement(By.id("${actionStep.id}")).click();\n`;
+      actionLine = actionLine + `.click();\n`;
     } else {
-      actionLine = `await driver.findElement(By.id("${actionStep.id}")).sendKeys(${actionStep.value});\n`;
+      actionLine = actionLine + `.sendKeys("${actionStep.value}");\n`;
     }
 
-    actionScripts = actionScripts + actionLine;
+    actionScript = actionScript + actionLine;
   });
 
   // Combine the existing script with the lines to insert
-  const modifiedScript = prefixScript + actionScripts + postfixScript;
+  const modifiedScript = prefixScript + actionScript + postfixScript;
 
   // create blob and download
   const blob = new Blob([modifiedScript], { type: "application/javascript" });
@@ -84,20 +86,22 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
   // Check if the message is from a content script
   if (sender.tab && isRecording) {
-    console.log("background script received a click save action");
+    console.log("background script user action");
     // Process the data received from the content script
     const receivedData = request.data;
 
     // log the data
-    console.log("Data received from content script:", receivedData);
-    print(receivedData);
+    console.log("Data received from content script:");
+    console.log(receivedData);
 
     if (receivedData.type == "click") {
+      console.log('received click event')
       recordedActions.push(receivedData);
     } else if (receivedData.type == "input") {
+      console.log('received input event')
       if (
-        recordedActions[recordedActions.lenth - 1].type == "input" &&
-        rereceivedData.id == recordedActions[recordedActions.length - 1].id
+        recordedActions[recordedActions.length - 1].type == "input" &&
+        receivedData.id == recordedActions[recordedActions.length - 1].id
       ) {
         recordedActions.pop();
       }
@@ -106,7 +110,3 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
   }
 });
-
-function printRecorded() {
-  console.log(recordedActions);
-}
