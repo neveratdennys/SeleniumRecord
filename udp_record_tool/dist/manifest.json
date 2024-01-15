@@ -1,0 +1,39 @@
+{
+    "name": "UDP Recorder",
+    "version": "1.0.1",
+    "description": "UDP Recorder Tool",
+    "permissions": [
+        "activeTab",
+        "tabs",
+        "declarativeContent",
+        "downloads",
+        "storage",
+        "unlimitedStorage",
+        "identity",
+        "identity.email"
+
+    ],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content_script/content.js"]
+        }
+    ],
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "options_page": "options.html",
+    "page_action": {
+        "default_popup": "pop-up.html",
+        "default_icon": "images/logo.png"
+    },
+    "web_accessible_resources": [
+        "content_script/content.js",
+        "content_script/content_new_viewer.js",
+        "content_script/content_shared.js"
+    ],
+    "manifest_version": 2
+}
