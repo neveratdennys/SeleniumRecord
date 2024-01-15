@@ -1,7 +1,5 @@
 let isRecording = false;
-let recordedElements = [];
-
-console.log("this is background page");
+let recordedActions = [];
 
 function generateSeleniumScript() {
   // Example JavaScript code content
@@ -35,37 +33,30 @@ function generateSeleniumScript() {
 
   let actionScripts = "";
 
-  recordedElements.forEach((element) => {
-    let btn = `${element.id}_button`
-    let line1  = `let ${btn} = await driver.findElement(By.id("${element.id}"));`;
-    let line2 =  `await ${btn}.click();`;
-    actionScripts = actionScripts + line1 + line2;
+  recordedActions.forEach((actionStep) => {
+    if (actionStep.type != "input") {
+      actionLine = `await driver.findElement(By.id("${actionStep.id}")).click();\n`;
+    } else {
+      actionLine = `await driver.findElement(By.id("${actionStep.id}")).sendKeys(${actionStep.value});\n`;
+    }
+
+    actionScripts = actionScripts + actionLine;
   });
 
   // Combine the existing script with the lines to insert
   const modifiedScript = prefixScript + actionScripts + postfixScript;
 
-  // Create a Blob with the modified script
+  // create blob and download
   const blob = new Blob([modifiedScript], { type: "application/javascript" });
-
-  // Create a URL for the Blob
   const blobUrl = URL.createObjectURL(blob);
-
-  // Create a download link
   const link = document.createElement("a");
   link.href = blobUrl;
   link.download = "modifiedScript.js";
-
-  // Append the link to the document
   document.body.appendChild(link);
-
-  // Trigger a click on the link to start the download
   link.click();
 
-  // Remove the link from the document
+  // cleanup
   document.body.removeChild(link);
-
-  // Clean up the Blob URL
   URL.revokeObjectURL(blobUrl);
 }
 
@@ -73,14 +64,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === "startRecord" && !isRecording) {
     console.log("recording starts");
     isRecording = true;
-    recordedElements = [];
+    recordedActions = [];
   } else if (request.action === "stopRecord" && isRecording) {
     console.log("recording stop");
     isRecording = false;
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       chrome.tabs.sendMessage(tabs[0].id, {
         action: "stopRecord",
-        recordedElements,
+        recordedActions,
       });
     });
     generateSeleniumScript();
@@ -97,14 +88,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     // Process the data received from the content script
     const receivedData = request.data;
 
-    // Do something with the data, for example, log it
+    // log the data
     console.log("Data received from content script:", receivedData);
-    print(receivedData)
-    recordedElements.push(receivedData);
-    // printRecorded()
+    print(receivedData);
+
+    if (receivedData.type == "click") {
+      recordedActions.push(receivedData);
+    } else if (receivedData.type == "input") {
+      if (
+        recordedActions[recordedActions.lenth - 1].type == "input" &&
+        rereceivedData.id == recordedActions[recordedActions.length - 1].id
+      ) {
+        recordedActions.pop();
+      }
+
+      recordedActions.push(receivedData);
+    }
   }
 });
 
 function printRecorded() {
-  console.log(recordedElements);
+  console.log(recordedActions);
 }

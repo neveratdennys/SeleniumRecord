@@ -8,6 +8,7 @@ $(document).ready(function () {
     stopRecordBtn.disabled = false
     startRecording();
   });
+  
   stopRecordBtn.addEventListener("click", () => {
     chrome.storage.local.set({ popupState: {isRecording: false} }, function() {});
     startRecordBtn.disabled = false
