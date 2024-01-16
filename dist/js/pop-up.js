@@ -33,10 +33,18 @@ $(document).ready(function () {
   restorePopupState();
 });
 
+
 /**
  * start Recording, send message to background and page
- */
+*/
 function startRecording() {
+  // send message to the content script
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    var activeTab = tabs[0];
+    chrome.tabs.sendMessage(activeTab.id, { message: "startRecord" });
+  });
+
+  // send message to the background script 
   chrome.runtime.sendMessage({ action: "startRecord" });
 }
 

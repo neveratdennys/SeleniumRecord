@@ -1,11 +1,16 @@
-console.log("UDP Recorder has successfully loaded");
-
 window.addEventListener("load", () => {
-    addUdpRecordEventListenerToPage();
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+        if (request.message === "startRecord") {
+          console.log("Content page has received start");
+          addUdpRecordEventListenerToPage();
+        } else if (request.action === "stopRecord") {
+          removeUdpRecordEventListenerFromPage();
+        }
+      });
 });
 
-// TODO: update the logic if
-// checks if the element has a UDP record element signature
+// TODO:
+// checks if the element has a UDP record element signature, this element should have some type of functionality associated to it
 function isUdpRecordElement(element) {
     if (element.id) {
         return true;
@@ -17,7 +22,7 @@ function isUdpRecordElement(element) {
 const clickEvent = (event) => {
     event.stopPropagation();
     let element = event.target;
-    
+
     while (element && element !== document.body && !isUdpRecordElement(element)) {
         element = element.parentNode;
     }
@@ -33,8 +38,23 @@ const clickEvent = (event) => {
     }
 };
 
+// // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
+// const clickEvent = (event) => {
+//     let element = event.target;
+
+//     const elementInfo = {
+//         type: "click",
+//         id: element.id,
+//     };
+
+//     // Send a message to the background script with the extracted data
+//     chrome.runtime.sendMessage({ data: elementInfo });
+// };
+
+
 // function to get add event listener to all UDP input elements
 const inputEvent = (event) => {
+    event.stopPropagation();
     const elementInfo = {
         type: "input",
         id: event.target.id,
@@ -47,16 +67,17 @@ const inputEvent = (event) => {
 
 // function to add event listener to all UDP click elements
 function addUdpRecordEventListenerToPage() {
-    //   let allElements = document.querySelectorAll('[id*="UDP_Record"');
+    // let allElements = document.querySelectorAll('[id*="UDP_Record"');
     let allElements = document.querySelectorAll("*");
+    // let allElements = document.querySelectorAll('[udpRecordId]');
 
     allElements.forEach((element) => {
-        if (element.tagName.toLowerCase() != "input") {
-            element.addEventListener("click", clickEvent);
-            console.log(element.id + " click eventListener added");
-        } else if (element.tagName.toLowerCase() == "input") {
+        if (element.tagName.toLowerCase() == "input") {
             element.addEventListener("input", inputEvent);
             console.log(element.id + " input eventListener added");
+        } else {
+            element.addEventListener("click", clickEvent);
+            console.log(element.id + " click eventListener added");
         }
     });
 }
@@ -77,15 +98,15 @@ function removeUdpRecordEventListenerFromPage() {
     });
 }
 
-function waitForCondition(checkFunction, callbackFunction, interval = 50) {
-    if (checkFunction()) {
-        callbackFunction();
-    } else {
-        setTimeout(() => {
-            waitForCondition(checkFunction, callbackFunction, interval);
-        }, interval);
-    }
-}
+// function waitForCondition(checkFunction, callbackFunction, interval = 50) {
+//     if (checkFunction()) {
+//         callbackFunction();
+//     } else {
+//         setTimeout(() => {
+//             waitForCondition(checkFunction, callbackFunction, interval);
+//         }, interval);
+//     }
+// }
 
 // function updateAllUdpEventListeners() {
 //   removeUdpRecordEventListenerFromPage();
