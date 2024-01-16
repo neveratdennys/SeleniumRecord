@@ -68,11 +68,11 @@ const inputEvent = (event) => {
 
 // function to add event listener to all UDP click elements
 function addUdpRecordEventListenerToPage() {
-    // let allElements = document.querySelectorAll('[id*="UDP_Record"');
-    // let allElements = document.querySelectorAll("*");
-    let allElements = document.querySelectorAll('[udpRecordId]');
+    // let udpRecordElements = document.querySelectorAll('[id*="UDP_Record"');
+    // let udpRecordElements = document.querySelectorAll("*");
+    let udpRecordElements = document.querySelectorAll('[udpRecordId]');
 
-    allElements.forEach((element) => {
+    udpRecordElements.forEach((element) => {
         if (element.tagName.toLowerCase() == "input") {
             element.addEventListener("input", inputEvent);
             console.log(element.id + " input eventListener added");
@@ -84,20 +84,28 @@ function addUdpRecordEventListenerToPage() {
 }
 
 function removeUdpRecordEventListenerFromPage() {
-    let allElements = document.querySelectorAll("*");
+    let udpRecordElements = document.querySelectorAll('[udpRecordId]');
+    udpRecordElements.forEach((element) => {
+        // let eventListeners = element.eventListeners
+        // let eventListeners = getEventListeners(element)
 
-    allElements.forEach((element) => {
-        let eventListeners = getEventListener(element);
-        // remove click event listeners 
-        if (eventListeners && eventListeners[clickEvent]) {
-            console.log('removed click event listener')
-            element.removeEventListener(clickEvent);
-        }
-        // remove input event listeners 
-        if (eventListeners && eventListeners[inputEvent]) {
-            console.log('removed input event listener')
-            element.removeEventListener(inputEvent);
-        }
+        // console.log(eventListeners)
+
+        // element.removeEventListener('click', clickEvent);
+        // element.removeEventListener('input', inputEvent);
+
+        // element.getEventListeners()
+
+        // // remove click event listeners 
+        // if (eventListeners[clickEvent]) {
+        //     console.log('removed click event listener')
+        //     element.removeEventListener('click', clickEvent);
+        // }
+        // // remove input event listeners 
+        // if (eventListeners[inputEvent]) {
+        //     console.log('removed input event listener')
+        //     element.removeEventListener('input', inputEvent);
+        // }
     });
 }
 
