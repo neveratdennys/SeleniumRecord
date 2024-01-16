@@ -1,9 +1,11 @@
+const udpElementAttributeFlag = 'udpRecordId';
+
 window.addEventListener("load", () => {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.message === "startRecord") {
           console.log("Content page has received start");
           addUdpRecordEventListenerToPage();
-        } else if (request.action === "stopRecord") {
+        } else if (request.message === "stopRecord") {
           removeUdpRecordEventListenerFromPage();
         }
       });
@@ -12,10 +14,7 @@ window.addEventListener("load", () => {
 // TODO:
 // checks if the element has a UDP record element signature, this element should have some type of functionality associated to it
 function isUdpRecordElement(element) {
-    if (element.id) {
-        return true;
-    }
-    return false;
+     return element.hasAttribute(udpElementAttributeFlag) 
 }
 
 // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
@@ -40,7 +39,9 @@ const clickEvent = (event) => {
 
 // // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
 // const clickEvent = (event) => {
+    
 //     let element = event.target;
+//     console.log(element + 'this element was clicked logged')
 
 //     const elementInfo = {
 //         type: "click",
@@ -68,8 +69,8 @@ const inputEvent = (event) => {
 // function to add event listener to all UDP click elements
 function addUdpRecordEventListenerToPage() {
     // let allElements = document.querySelectorAll('[id*="UDP_Record"');
-    let allElements = document.querySelectorAll("*");
-    // let allElements = document.querySelectorAll('[udpRecordId]');
+    // let allElements = document.querySelectorAll("*");
+    let allElements = document.querySelectorAll('[udpRecordId]');
 
     allElements.forEach((element) => {
         if (element.tagName.toLowerCase() == "input") {
@@ -87,12 +88,14 @@ function removeUdpRecordEventListenerFromPage() {
 
     allElements.forEach((element) => {
         let eventListeners = getEventListener(element);
-        // remove click events
+        // remove click event listeners 
         if (eventListeners && eventListeners[clickEvent]) {
+            console.log('removed click event listener')
             element.removeEventListener(clickEvent);
         }
-        // remove form input events
+        // remove input event listeners 
         if (eventListeners && eventListeners[inputEvent]) {
+            console.log('removed input event listener')
             element.removeEventListener(inputEvent);
         }
     });

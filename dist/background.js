@@ -82,16 +82,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 // Listen for messages from content scripts or other parts of the extension
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  console.log("this is in the background listener");
 
   // Check if the message is from a content script
   if (sender.tab && isRecording) {
-    console.log("background script user action");
     // Process the data received from the content script
     const receivedData = request.data;
 
     // log the data
-    console.log("Data received from content script:");
     console.log(receivedData);
 
     if (receivedData.type == "click") {

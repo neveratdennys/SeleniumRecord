@@ -35,7 +35,7 @@ $(document).ready(function () {
 
 
 /**
- * start Recording, send message to background and page
+ * start Recording
 */
 function startRecording() {
   // send message to the content script
@@ -50,9 +50,15 @@ function startRecording() {
 
 /**
  * Stop Recording
- * If in viewer, send message to page, If not, send to background page
  */
 function stopRecording() {
+  // // send message to the background script
+  // chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+  //   var activeTab = tabs[0];
+  //   chrome.tabs.sendMessage(activeTab.id, { message: "stopRecord" });
+  // });
+
+  // send message to the content script
   chrome.runtime.sendMessage({ action: "stopRecord" });
 }
 
