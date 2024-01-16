@@ -1,20 +1,26 @@
-const udpElementAttributeFlag = 'udpRecordId';
+const udpElementAttributeFlag = "udpRecordId";
 
 window.addEventListener("load", () => {
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    chrome.runtime.onMessage.addListener(function (
+        request,
+        sender,
+        sendResponse
+    ) {
         if (request.message === "startRecord") {
-          console.log("Content page has received start");
-          addUdpRecordEventListenerToPage();
+            console.log("Content page has received start");
+            addUdpRecordEventListenerToPage();
+            startWatcher();
         } else if (request.message === "stopRecord") {
-          removeUdpRecordEventListenerFromPage();
+            removeUdpRecordEventListenerFromPage();
+            stopWatcher();
         }
-      });
+    });
 });
 
 // TODO:
 // checks if the element has a UDP record element signature, this element should have some type of functionality associated to it
 function isUdpRecordElement(element) {
-     return element.hasAttribute(udpElementAttributeFlag) 
+    return element.hasAttribute(udpElementAttributeFlag);
 }
 
 // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
@@ -22,7 +28,11 @@ const clickEvent = (event) => {
     event.stopPropagation();
     let element = event.target;
 
-    while (element && element !== document.body && !isUdpRecordElement(element)) {
+    while (
+        element &&
+        element !== document.body &&
+        !isUdpRecordElement(element)
+    ) {
         element = element.parentNode;
     }
 
@@ -39,7 +49,7 @@ const clickEvent = (event) => {
 
 // // function to get add event listener to all elements. if you click on an inner element without a onclick action, it'll iterate to the parent until it finds a UDP record element
 // const clickEvent = (event) => {
-    
+
 //     let element = event.target;
 //     console.log(element + 'this element was clicked logged')
 
@@ -52,8 +62,6 @@ const clickEvent = (event) => {
 //     chrome.runtime.sendMessage({ data: elementInfo });
 // };
 
-
-// function to get add event listener to all UDP input elements
 const inputEvent = (event) => {
     event.stopPropagation();
     const elementInfo = {
@@ -70,7 +78,7 @@ const inputEvent = (event) => {
 function addUdpRecordEventListenerToPage() {
     // let udpRecordElements = document.querySelectorAll('[id*="UDP_Record"');
     // let udpRecordElements = document.querySelectorAll("*");
-    let udpRecordElements = document.querySelectorAll('[udpRecordId]');
+    let udpRecordElements = document.querySelectorAll("[udpRecordId]");
 
     udpRecordElements.forEach((element) => {
         if (element.tagName.toLowerCase() == "input") {
@@ -84,24 +92,20 @@ function addUdpRecordEventListenerToPage() {
 }
 
 function removeUdpRecordEventListenerFromPage() {
-    let udpRecordElements = document.querySelectorAll('[udpRecordId]');
+    let udpRecordElements = document.querySelectorAll("[udpRecordId]");
     udpRecordElements.forEach((element) => {
         // let eventListeners = element.eventListeners
         // let eventListeners = getEventListeners(element)
-
         // console.log(eventListeners)
-
         // element.removeEventListener('click', clickEvent);
         // element.removeEventListener('input', inputEvent);
-
         // element.getEventListeners()
-
-        // // remove click event listeners 
+        // // remove click event listeners
         // if (eventListeners[clickEvent]) {
         //     console.log('removed click event listener')
         //     element.removeEventListener('click', clickEvent);
         // }
-        // // remove input event listeners 
+        // // remove input event listeners
         // if (eventListeners[inputEvent]) {
         //     console.log('removed input event listener')
         //     element.removeEventListener('input', inputEvent);
@@ -109,98 +113,70 @@ function removeUdpRecordEventListenerFromPage() {
     });
 }
 
-// function waitForCondition(checkFunction, callbackFunction, interval = 50) {
-//     if (checkFunction()) {
-//         callbackFunction();
-//     } else {
-//         setTimeout(() => {
-//             waitForCondition(checkFunction, callbackFunction, interval);
-//         }, interval);
+
+// let ongoingRequests = {};
+// let watcherActive = false;
+
+// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+//     if (request.action === "startWatcher") {
+//         startWatcher();
+//     } else if (request.action === "stopWatcher") {
+//         stopWatcher();
 //     }
-// }
-
-// function updateAllUdpEventListeners() {
-//   removeUdpRecordEventListenerFromPage();
-//   addUdpRecordEventListenerToPage();
-// }
-
-// // Function to check if all network calls are completed
-// function checkNetworkCallsCompleted() {
-//   // Your logic to check if all network calls are completed
-//   // For example, you can iterate through ongoing XMLHttpRequests
-//   // and check their readyState and status properties.
-// }
-
-// function areHttpRequestsComplete(callback) {
-//   // Track the number of ongoing requests
-//   let ongoingRequests = 0;
-
-//   // Event listener to decrement the ongoing requests count when a request completes
-//   function onRequestComplete() {
-//     ongoingRequests--;
-//     checkAllRequestsComplete();
-//   }
-
-//   // Override XMLHttpRequest's open method to intercept new requests
-//   const originalOpen = XMLHttpRequest.prototype.open;
-//   XMLHttpRequest.prototype.open = function () {
-//     ongoingRequests++;
-//     this.addEventListener("load", onRequestComplete);
-//     originalOpen.apply(this, arguments);
-//   };
-
-//   // Function to check if all requests are complete and invoke the callback
-//   function checkAllRequestsComplete() {
-//     if (ongoingRequests === 0) {
-//       // All requests are complete
-//       callback(true);
-//     } else {
-//       // Some requests are still ongoing
-//       callback(false);
-//     }
-//   }
-
-//   // Example: Perform asynchronous operations (e.g., AJAX requests)
-//   // ...
-
-//   // After initiating requests, call checkAllRequestsComplete to handle cases where there are no requests
-//   checkAllRequestsComplete();
-// }
-
-// // Example usage:
-// areHttpRequestsComplete(function (allComplete) {
-//   if (allComplete) {
-//     console.log("All HTTP requests are complete.");
-//     // Your code here to handle the case where all requests are complete
-//   } else {
-//     console.log("Some HTTP requests are still ongoing.");
-//     // Your code here to handle the case where some requests are still ongoing
-//   }
 // });
 
-// // Listen for the page to be fully loaded
-// window.addEventListener("load", function () {
-//   waitForCondition(checkNetworkCallsCompleted, updateAllUdpEventListeners, 20);
-// });
+// function startWatcher() {
+//     // Reset ongoing requests
+//     ongoingRequests = {};
 
-// // Listen for changes in the document (DOM) content
-// document.addEventListener("DOMContentLoaded", function () {
-//   waitForCondition(checkNetworkCallsCompleted, updateAllUdpEventListeners, 20);
-// });
+//     // Set the watcher as active
+//     watcherActive = true;
 
-// // Listen for XMLHttpRequest changes to track ongoing network requests
-// (function (open) {
-//   XMLHttpRequest.prototype.open = function (method, url, async) {
-//     this.addEventListener("load", function () {
-//       // Handle the completion of the network request
-//       // You may want to update a counter or perform additional checks
-//       if (checkNetworkCallsCompleted()) {
-//         // All network calls have been completed, you can proceed with your logic
-//       } else {
-//         // Network calls are still in progress, you may want to wait or handle accordingly
-//       }
+//     // Add network request listeners
+//     chrome.webRequest.onBeforeRequest.addListener(
+//         onRequestStart,
+//         { urls: ["<all_urls>"] },
+//         ["blocking"]
+//     );
+
+//     chrome.webRequest.onCompleted.addListener(onRequestComplete, {
+//         urls: ["<all_urls>"],
 //     });
 
-//     open.apply(this, arguments);
-//   };
-// })(XMLHttpRequest.prototype.open);
+//     // Implement the logic for continuously watching for new network calls
+//     // For demonstration purposes, we'll log a message for each new request
+//     setInterval(function () {
+//         if (watcherActive) {
+//             console.log("Watching for new network calls...");
+//             checkIfAllRequestsCompleted();
+//         }
+//     }, 500);
+// }
+
+// function stopWatcher() {
+//     // Remove network request listeners
+//     chrome.webRequest.onBeforeRequest.removeListener(onRequestStart);
+//     chrome.webRequest.onCompleted.removeListener(onRequestComplete);
+
+//     // Set the watcher as inactive
+//     watcherActive = false;
+// }
+
+// function onRequestStart(details) {
+//     // Mark the request as ongoing
+//     ongoingRequests[details.requestId] = true;
+// }
+
+// function onRequestComplete(details) {
+//     // Update the status of the completed request
+//     delete ongoingRequests[details.requestId];
+//     checkIfAllRequestsCompleted();
+// }
+
+// function checkIfAllRequestsCompleted() {
+//     if (Object.keys(ongoingRequests).length === 0) {
+//         removeUdpRecordEventListenerFromPage()
+//         addUdpRecordEventListenerToPage()
+//     }
+// }
+
